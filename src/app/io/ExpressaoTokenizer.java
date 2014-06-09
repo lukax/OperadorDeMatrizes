@@ -1,7 +1,8 @@
 package app.io;
 
-import app.util.Token;
-import app.util.TokenType;
+import app.domain.Token;
+import app.domain.TokenType;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +33,9 @@ public class ExpressaoTokenizer {
 
             char firstChar = subExpressao.charAt(0);
             switch (firstChar) {//For single character tokens
+            	case ' ':
+	            	index++;
+	            	return nextToken();
                 case '+':
                     token.setType(TokenType.ADD);
                     token.setValue("" + firstChar);

@@ -1,9 +1,10 @@
 package app.mat;
 
+import app.domain.ExpressaoEscalar;
 import app.mat.base.Expressao;
 import app.mat.base.OperacaoUnaria;
 
-public class Determinante extends OperacaoUnaria<Expressao<Matriz>, Escalar> {
+public class Determinante extends OperacaoUnaria<Expressao<Matriz>, Escalar> implements ExpressaoEscalar{
 
 	public Determinante(Expressao<Matriz> arg) {
 		super(arg);

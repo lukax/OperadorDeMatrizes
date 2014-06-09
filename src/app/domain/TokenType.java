@@ -1,4 +1,4 @@
-package app.util;
+package app.domain;
 
 public enum TokenType {
     VAR,

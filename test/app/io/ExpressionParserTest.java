@@ -1,19 +1,24 @@
 package app.io;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.junit.Test;
 
 import app.mat.AdicaoEscalar;
+import app.mat.AdicaoMatricial;
 import app.mat.Escalar;
+import app.mat.Matriz;
 import app.mat.MultiplicacaoEscalar;
+import app.mat.MultiplicacaoMista;
 import app.mat.base.Expressao;
 
 @SuppressWarnings("rawtypes")
-public class ExpressaoParserTest {
+public class ExpressionParserTest {
 
 	@Test
 	public void parseNumber() {
@@ -93,9 +98,53 @@ public class ExpressaoParserTest {
 		assertEquals(15, add.calcular().getValor(), 0);
 	}
 	
+	@Test
+	public void parseMatrixExpression(){
+		Map<String, Expressao> vars = new HashMap<String, Expressao>();
+		Matriz varA = buildMatrix(2,2);
+		Matriz varB = buildMatrix(2,2);
+		vars.put("A", varA);
+		vars.put("B", varB);
+		
+		ExpressaoTokenizer tokenizer = new ExpressaoTokenizer("A-B");
+		ExpressionParser parser = new ExpressionParser(tokenizer, vars);
+		
+		Expressao exp = parser.parse();
+	
+		assertTrue(exp instanceof AdicaoMatricial);
+		assertEquals(varA.getValor(1, 0) - varB.getValor(1, 0), ((AdicaoMatricial)exp).calcular().getValor(1, 0), 0);
+	}
+	
+	@Test
+	public void parseLongMatrixExpression(){
+		Map<String, Expressao> vars = new HashMap<String, Expressao>();
+		Matriz varA = buildMatrix(2,3);
+		Matriz varB = buildMatrix(3,2);
+		vars.put("A", varA);
+		vars.put("B", varB);
+		
+		ExpressaoTokenizer tokenizer = new ExpressaoTokenizer("2*(A+B)");
+		ExpressionParser parser = new ExpressionParser(tokenizer, vars);
+		
+		Expressao exp = parser.parse();
+	
+		assertTrue(exp instanceof MultiplicacaoMista);
+		assertEquals(2*(varA.getValor(1, 0) + varB.getValor(1, 0)), ((MultiplicacaoMista)exp).calcular().getValor(1, 0), 0);
+	}
+	
 	Expressao<?> buildExpressao(String expressao, Map<String, Expressao> vars){
 		ExpressaoTokenizer tokenizer = new ExpressaoTokenizer(expressao);
-		ExpressaoParser parser = new ExpressaoParser(tokenizer, ((vars != null) ? vars : new HashMap<String, Expressao>()));
+		ExpressionParser parser = new ExpressionParser(tokenizer, ((vars != null) ? vars : new HashMap<String, Expressao>()));
 		return parser.parse();
+	}
+	
+	Matriz buildMatrix(int linhas, int colunas){
+		Matriz m = new Matriz(linhas,colunas);
+		for(int lin = 0; lin < linhas; lin++){
+			for(int col = 0; col < colunas; col++){
+				m.setValor(lin, col, new Random().nextDouble());
+			}
+		}
+		return m;
 	}
 }

@@ -1,4 +1,5 @@
-package app.util;
+package app.domain;
+
 
 public class Token {
 

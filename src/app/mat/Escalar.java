@@ -1,8 +1,9 @@
 package app.mat;
 
+import app.domain.ExpressaoEscalar;
 import app.mat.base.Expressao;
 
-public class Escalar extends Expressao<Escalar> {
+public class Escalar extends Expressao<Escalar> implements ExpressaoEscalar {
 
 	private double valor;
 	

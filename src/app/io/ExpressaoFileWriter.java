@@ -5,8 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import app.domain.Messages;
 import app.mat.base.Expressao;
-import app.util.Messages;
 
 public class ExpressaoFileWriter {
 

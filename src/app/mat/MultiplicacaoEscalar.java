@@ -1,9 +1,10 @@
 package app.mat;
 
+import app.domain.ExpressaoEscalar;
 import app.mat.base.Expressao;
 import app.mat.base.OperacaoBinaria;
 
-public class MultiplicacaoEscalar extends OperacaoBinaria<Expressao<Escalar>, Expressao<Escalar>, Escalar> {
+public class MultiplicacaoEscalar extends OperacaoBinaria<Expressao<Escalar>, Expressao<Escalar>, Escalar> implements ExpressaoEscalar{
 
 	public MultiplicacaoEscalar(Expressao<Escalar> arg1, Expressao<Escalar> arg2) {
 		super(arg1, arg2);

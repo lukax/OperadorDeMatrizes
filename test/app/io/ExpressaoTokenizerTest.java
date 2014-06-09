@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import app.util.Token;
-import app.util.TokenType;
+import app.domain.Token;
+import app.domain.TokenType;
 
 
 public class ExpressaoTokenizerTest {

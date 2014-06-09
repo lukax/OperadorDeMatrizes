@@ -1,9 +1,10 @@
 package app.mat;
 
+import app.domain.ExpressaoEscalar;
 import app.mat.base.Expressao;
 import app.mat.base.OperacaoUnaria;
 
-public class InversaoEscalar extends OperacaoUnaria<Expressao<Escalar>, Escalar> {
+public class InversaoEscalar extends OperacaoUnaria<Expressao<Escalar>, Escalar> implements ExpressaoEscalar {
 
 	public InversaoEscalar(Expressao<Escalar> arg){
 		super(arg);

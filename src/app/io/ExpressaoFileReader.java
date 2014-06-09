@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.util.Messages;
+import app.domain.Messages;
 
 public class ExpressaoFileReader {
 
