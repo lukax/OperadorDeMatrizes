@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import app.mat.AdicaoEscalar;
 import app.mat.AdicaoMatricial;
+import app.mat.Determinante;
 import app.mat.Escalar;
 import app.mat.Matriz;
 import app.mat.MultiplicacaoEscalar;
@@ -132,6 +133,25 @@ public class ExpressionParserTest {
 		assertEquals(2*(varA.getValor(1, 0) + varB.getValor(1, 0)), ((MultiplicacaoMista)exp).calcular().getValor(1, 0), 0);
 	}
 	
+	@Test
+	public void parseFunction(){
+		Map<String, Expressao> vars = new HashMap<String, Expressao>();
+		Matriz varA = new Matriz(2,2);
+		varA.setValor(0, 0, 42);
+		varA.setValor(0, 1, 1.618);
+		varA.setValor(1, 1, 2.71);
+		varA.setValor(1, 0, 3.14);
+		vars.put("A", varA);
+		
+		ExpressaoTokenizer tokenizer = new ExpressaoTokenizer("det(A*1)");
+		ExpressionParser parser = new ExpressionParser(tokenizer, vars);
+		
+		Expressao exp = parser.parse();
+				
+		assertTrue(exp instanceof Determinante);
+		assertEquals(108, ((Determinante)exp).calcular().getValor(), 1);
+	}
+	
 	Expressao<?> buildExpressao(String expressao, Map<String, Expressao> vars){
 		ExpressaoTokenizer tokenizer = new ExpressaoTokenizer(expressao);
 		ExpressionParser parser = new ExpressionParser(tokenizer, ((vars != null) ? vars : new HashMap<String, Expressao>()));
@@ -142,7 +162,7 @@ public class ExpressionParserTest {
 		Matriz m = new Matriz(linhas,colunas);
 		for(int lin = 0; lin < linhas; lin++){
 			for(int col = 0; col < colunas; col++){
-				m.setValor(lin, col, new Random().nextDouble());
+				m.setValor(lin, col, new Random().nextDouble()* 10);
 			}
 		}
 		return m;

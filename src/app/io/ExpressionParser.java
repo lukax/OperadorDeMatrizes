@@ -10,6 +10,7 @@ import app.domain.TokenType;
 import app.mat.AdicaoEscalar;
 import app.mat.AdicaoMatricial;
 import app.mat.AdicaoMista;
+import app.mat.Determinante;
 import app.mat.Escalar;
 import app.mat.InversaoEscalar;
 import app.mat.MultiplicacaoEscalar;
@@ -17,6 +18,7 @@ import app.mat.MultiplicacaoMatricial;
 import app.mat.MultiplicacaoMista;
 import app.mat.NegacaoEscalar;
 import app.mat.NegacaoMatricial;
+import app.mat.SolucaoDeSistema;
 import app.mat.base.Expressao;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
@@ -75,16 +77,40 @@ public class ExpressionParser {
 		return var;
 	}
 	
+	private Expressao function(){
+		TokenType[] funcs = { TokenType.DET, TokenType.SOL };
+		
+		Expressao var = null;
+		
+		Token token = tokenizer.nextToken();
+		if(Arrays.asList(funcs).contains(token.getType())){
+			var = variable();
+			
+			if(token.getType() == TokenType.DET)
+				var = new Determinante(var);
+			else if(token.getType() == TokenType.SOL)
+				var = new SolucaoDeSistema(var);
+			
+		}
+		else{
+			//Nao é uma funcao, então é uma variavel
+			tokenizer.revert();
+			var = variable();
+		}
+		
+		return var;
+	}
+	
 	private Expressao factor() {
 		TokenType[] ops = { TokenType.MUL, TokenType.DIV };
 
-		Expressao factor1 = variable();
+		Expressao factor1 = function();
 
-		Token nextToken = tokenizer.nextToken();
-		while (Arrays.asList(ops).contains(nextToken.getType())) {
+		Token token = tokenizer.nextToken();
+		while (Arrays.asList(ops).contains(token.getType())) {
 			Expressao factor2 = variable();
 
-			if (nextToken.getType() == TokenType.MUL) {
+			if (token.getType() == TokenType.MUL) {
 				if(factor1 instanceof ExpressaoEscalar && factor2 instanceof ExpressaoEscalar)
 					//escalar * escalar
 					factor1 = new MultiplicacaoEscalar(factor1, factor2);
@@ -98,7 +124,7 @@ public class ExpressionParser {
 					//matriz * escalar
 					factor1 = new MultiplicacaoMista(factor2, factor1);
 			} 
-			else if (nextToken.getType() == TokenType.DIV) {
+			else if (token.getType() == TokenType.DIV) {
 				if(factor1 instanceof ExpressaoEscalar && factor2 instanceof ExpressaoEscalar)
 					//escalar / escalar
 					factor1 = new MultiplicacaoEscalar(factor1, new InversaoEscalar(factor2));
@@ -113,7 +139,7 @@ public class ExpressionParser {
 					throw new RuntimeException();
 			}
 
-			nextToken = tokenizer.nextToken();
+			token = tokenizer.nextToken();
 		}
 		tokenizer.revert();// O proximo token não é responsabilidade dessa
 							// funcao
@@ -126,11 +152,11 @@ public class ExpressionParser {
 
 		Expressao expression1 = factor();
 
-		Token nextToken = tokenizer.nextToken();
-		while (Arrays.asList(ops).contains(nextToken.getType())) {
+		Token token = tokenizer.nextToken();
+		while (Arrays.asList(ops).contains(token.getType())) {
 			Expressao expression2 = factor();
 
-			if (nextToken.getType() == TokenType.ADD) {
+			if (token.getType() == TokenType.ADD) {
 				if(expression1 instanceof ExpressaoEscalar && expression2 instanceof ExpressaoEscalar)
 					//escalar + escalar
 					expression1 = new AdicaoEscalar(expression1, expression2);
@@ -144,7 +170,7 @@ public class ExpressionParser {
 					//matriz + escalar
 					expression1 = new AdicaoMista(expression2, expression1);
 			}
-			else if (nextToken.getType() == TokenType.SUB) {
+			else if (token.getType() == TokenType.SUB) {
 				if(expression1 instanceof ExpressaoEscalar && expression2 instanceof ExpressaoEscalar)
 					//escalar - escalar
 					expression1 = new AdicaoEscalar(expression1, new NegacaoEscalar(expression2));
@@ -159,7 +185,7 @@ public class ExpressionParser {
 					expression1 = new AdicaoMista(new NegacaoEscalar(expression2), expression1);
 			}
 			
-			nextToken = tokenizer.nextToken();
+			token = tokenizer.nextToken();
 		}
 		tokenizer.revert();
 
