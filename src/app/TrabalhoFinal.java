@@ -28,6 +28,7 @@ public class TrabalhoFinal {
             reader = new ExpressaoFileReader(arquivoDeEntrada);
         } catch (OperadorDeMatrizesException | IOException e) {
             System.err.println(Messages.ERROR_INPUTFILE_ACCESS);
+            System.err.println(e.getMessage());
             throw e;
         }
 
@@ -70,6 +71,7 @@ public class TrabalhoFinal {
             writer.write(results);
         } catch (IOException e) {
             System.err.println(Messages.ERROR_OUTPUTFILE_ACCESS);
+            System.err.println(e.getMessage());
             throw e;
         }
     }
@@ -77,6 +79,7 @@ public class TrabalhoFinal {
     static void processInvalidLine(OperadorDeMatrizesException e, String invalidLine) {
         System.err.println(Messages.ERROR_INVALID_LINE);
         System.err.println(invalidLine);
+        System.err.println(e.getDetails());
         throw e;
     }
 }

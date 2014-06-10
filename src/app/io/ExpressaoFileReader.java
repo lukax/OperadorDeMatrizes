@@ -43,6 +43,10 @@ public class ExpressaoFileReader {
     private void lerVariaveis(BufferedReader reader) throws NumberFormatException, IOException {
         variaveis = new ArrayList<>();
         String nextLine = reader.readLine().trim();
+        while(nextLine.equals("")){ 
+            //Pular linhas vazias
+            nextLine = reader.readLine().trim();
+        }
 
         int nVariaveis = Integer.parseInt(nextLine);
         for (int i = 0; i < nVariaveis; i++) {
@@ -54,7 +58,11 @@ public class ExpressaoFileReader {
     private void lerExpressoes(BufferedReader reader) throws NumberFormatException, IOException {
         expressoes = new ArrayList<>();
         String nextLine = reader.readLine().trim();
-
+        while(nextLine.equals("")){ 
+            //Pular linhas vazias
+            nextLine = reader.readLine().trim();
+        }
+        
         int nExpressoes = Integer.parseInt(nextLine);
         for (int i = 0; i < nExpressoes; i++) {
             nextLine = reader.readLine().trim();
