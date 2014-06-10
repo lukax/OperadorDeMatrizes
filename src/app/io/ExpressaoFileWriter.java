@@ -9,27 +9,27 @@ import app.mat.base.Expressao;
 
 public class ExpressaoFileWriter {
 
-    private String arquivo;
+    private final String arquivo;
 
-	public ExpressaoFileWriter(String arquivo) {
-		this.arquivo = arquivo;
+    public ExpressaoFileWriter(String arquivo) {
+        this.arquivo = arquivo;
     }
-    
-    public void write(List<Expressao<?>> expressoes) throws IOException{
-    	BufferedWriter writer;
-    	try {
+
+    public void write(List<Expressao<?>> expressoes) throws IOException {
+        BufferedWriter writer;
+        try {
             writer = new BufferedWriter(new FileWriter(arquivo));
-           
+
             for (Expressao<?> e : expressoes) {
                 writer.write(e.toString());
                 writer.newLine();
             }
 
             writer.close();
-            
+
         } catch (IOException e) {
-        	throw e; 
+            throw e;
         }
-        
+
     }
 }

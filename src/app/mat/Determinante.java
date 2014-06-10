@@ -2,6 +2,7 @@ package app.mat;
 
 import app.domain.ExpressaoEscalar;
 import app.domain.Messages;
+import app.exception.InvalidOperationException;
 import app.mat.base.Expressao;
 import app.mat.base.OperacaoUnaria;
 
@@ -16,11 +17,10 @@ public class Determinante extends OperacaoUnaria<Expressao<Matriz>, Escalar> imp
         Matriz m = arg.calcular();
 
         if (m.linhas() != m.colunas()) {
-            throw new IllegalArgumentException(Messages.ERROR_INVALID_MATRIX_SIZE);
+            throw new InvalidOperationException(Messages.ERROR_INVALID_MATRIX);
         }
 
         double resultado = determinante(m);
-        System.out.println(resultado);
         return new Escalar(resultado);
     }
 

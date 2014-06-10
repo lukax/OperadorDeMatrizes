@@ -26,14 +26,14 @@ public class Matriz extends Expressao<Matriz> implements ExpressaoMatricial {
 
     public double getValor(int lin, int col) {
         if ((lin < 0 || col < 0) || (lin > linhas() - 1 || col > colunas() - 1)) {
-            throw new IllegalArgumentException(Messages.ERROR_INVALID_MATRIX_SIZE);
+            throw new IllegalArgumentException(Messages.ERROR_INVALID_MATRIX_POS);
         }
         return valores[lin][col];
     }
 
     public void setValor(int lin, int col, double valor) {
         if ((lin < 0 || col < 0) || (lin > linhas() - 1 || col > colunas() - 1)) {
-            throw new IllegalArgumentException(Messages.ERROR_INVALID_MATRIX_SIZE);
+            throw new IllegalArgumentException(Messages.ERROR_INVALID_MATRIX_POS);
         }
         valores[lin][col] = valor;
     }

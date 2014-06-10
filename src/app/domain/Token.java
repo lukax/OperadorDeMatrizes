@@ -1,6 +1,5 @@
 package app.domain;
 
-
 public class Token {
 
     private TokenType type;

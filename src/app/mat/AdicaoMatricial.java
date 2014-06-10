@@ -1,6 +1,8 @@
 package app.mat;
 
 import app.domain.ExpressaoMatricial;
+import app.domain.Messages;
+import app.exception.InvalidOperationException;
 import app.mat.base.Expressao;
 import app.mat.base.OperacaoBinaria;
 
@@ -16,7 +18,7 @@ public class AdicaoMatricial extends OperacaoBinaria<Expressao<Matriz>, Expressa
         Matriz m2 = arg2.calcular();
 
         if (m1.linhas() != m2.linhas() || m1.colunas() != m2.colunas()) {
-            //TODO: exception
+            throw new InvalidOperationException(Messages.ERROR_INVALID_MATRIX);
         }
 
         Matriz resultado = new Matriz(m1.linhas(), m2.colunas());
