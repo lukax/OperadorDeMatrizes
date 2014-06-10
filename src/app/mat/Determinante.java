@@ -1,6 +1,7 @@
 package app.mat;
 
 import app.domain.ExpressaoEscalar;
+import app.domain.Messages;
 import app.mat.base.Expressao;
 import app.mat.base.OperacaoUnaria;
 
@@ -15,17 +16,17 @@ public class Determinante extends OperacaoUnaria<Expressao<Matriz>, Escalar> imp
         Matriz m = arg.calcular();
 
         if (m.linhas() != m.colunas()) {
-            // TODO: exception...
+            throw new IllegalArgumentException(Messages.ERROR_INVALID_MATRIX_SIZE);
         }
 
         double resultado = determinante(m);
-
+        System.out.println(resultado);
         return new Escalar(resultado);
     }
 
     private double determinante(Matriz maior) {
-        int soma = 0;
-        int uni;
+        double soma = 0;
+        double sinal;
         if (maior.linhas() == 1) {
             return maior.getValor(0, 0);
         }
@@ -42,11 +43,11 @@ public class Determinante extends OperacaoUnaria<Expressao<Matriz>, Escalar> imp
                 }
             }
             if (i % 2 == 0) {
-                uni = 1;
+                sinal = 1;
             } else {
-                uni = -1;
+                sinal = -1;
             }
-            soma += uni * maior.getValor(0, i) * (determinante(menor));
+            soma += sinal * maior.getValor(0, i) * (determinante(menor));
         }
         return soma;
     }
