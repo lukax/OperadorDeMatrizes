@@ -13,18 +13,18 @@ public class ExpressaoTokenizer {
     private int index;
     private boolean returnPreviousToken = false;
     private Token previousToken;
-    
+
     public ExpressaoTokenizer(String expressao) {
+        this.expressao = expressao;
         this.index = 0;
-        this.expressao = expressao.trim();
     }
 
     public Token nextToken() {
-        if(returnPreviousToken){
+        if (returnPreviousToken) {
             returnPreviousToken = false;
             return previousToken;
         }
-        
+
         Token token = new Token();
 
         if (index == expressao.length()) {
@@ -34,9 +34,9 @@ public class ExpressaoTokenizer {
 
             char firstChar = subExpressao.charAt(0);
             switch (firstChar) {//For single character tokens
-            	case ' ':
-	            	index++;
-	            	return nextToken();
+                case ' ':
+                    index++;
+                    return nextToken();
                 case '+':
                     token.setType(TokenType.ADD);
                     token.setValue("" + firstChar);
@@ -82,22 +82,18 @@ public class ExpressaoTokenizer {
                     if (detMatcher.find()) {
                         parsed = detMatcher.group();
                         token.setType(TokenType.DET);
-                    } 
-                    else if (solMatcher.find()) {
+                    } else if (solMatcher.find()) {
                         parsed = solMatcher.group();
                         token.setType(TokenType.SOL);
-                    } 
-                    else if (numberMatcher.find()) {
+                    } else if (numberMatcher.find()) {
                         parsed = numberMatcher.group();
                         token.setType(TokenType.NUM);
-                    } 
-                    else if (variableMatcher.find()) {
+                    } else if (variableMatcher.find()) {
                         parsed = variableMatcher.group();
                         token.setType(TokenType.VAR);
-                    } 
-                    else {
+                    } else {
                         //Not a valid token
-                    	throw new InvalidSyntaxException();
+                        throw new InvalidSyntaxException();
                     }
 
                     token.setValue(parsed);
@@ -108,8 +104,8 @@ public class ExpressaoTokenizer {
 
         return (previousToken = token);
     }
-    
-    public void revert(){
+
+    public void revert() {
         returnPreviousToken = true;
     }
 }

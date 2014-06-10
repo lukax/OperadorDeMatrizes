@@ -20,12 +20,15 @@ import app.mat.base.Expressao;
 public class TrabalhoFinal {
 
 	public static void main(String[] args) throws IOException {
-		String arquivoDeEntrada = args[0];
-		String arquivoDeSaida = args[1];
+		String arquivoDeEntrada = "asdf";
+		String arquivoDeSaida = "asdff";
 		
 		ExpressaoFileReader reader = null;
 		try {
 			reader = new ExpressaoFileReader(arquivoDeEntrada);
+		} catch(OperadorDeMatrizesException e){
+			System.err.println(Messages.ERROR_INPUTFILE_ACCESS);
+			throw e;	
 		} catch (IOException e) {
 			System.err.println(Messages.ERROR_INPUTFILE_ACCESS);
 			throw e;

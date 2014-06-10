@@ -16,24 +16,20 @@ public class ExpressaoFileWriter {
     }
     
     public void write(List<Expressao<?>> expressoes) throws IOException{
-    	BufferedWriter writer = null;
+    	BufferedWriter writer;
     	try {
-    		writer = new BufferedWriter(new FileWriter(arquivo));
+            writer = new BufferedWriter(new FileWriter(arquivo));
            
             for (Expressao<?> e : expressoes) {
                 writer.write(e.toString());
                 writer.newLine();
             }
 
+            writer.close();
+            
         } catch (IOException e) {
         	throw e; 
-        } finally {
-            try {
-                writer.close();
-            } catch (IOException e) {
-            	throw e;
-            }
         }
-
+        
     }
 }

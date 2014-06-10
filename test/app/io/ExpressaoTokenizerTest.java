@@ -40,7 +40,7 @@ public class ExpressaoTokenizerTest {
 	@Test
 	public void identifyExpressions(){
 		ExpressaoTokenizer t = new ExpressaoTokenizer("35.1+sol(A)*(1+2)");
-		Token token = null;
+		Token token;
 		
 		token = t.nextToken();
 		assertEquals(TokenType.NUM, token.getType());

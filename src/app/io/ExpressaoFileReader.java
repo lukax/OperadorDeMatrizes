@@ -7,31 +7,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.exception.InvalidSyntaxException;
+
 public class ExpressaoFileReader {
 
     private ArrayList<String> variaveis;
     private ArrayList<String> expressoes;
 
     public ExpressaoFileReader(String arquivo) throws IOException {
-        BufferedReader reader = null;
+        BufferedReader reader;
 
         try {
             reader = new BufferedReader(new FileReader(arquivo));
 
             lerVariaveis(reader);
-            reader.readLine(); /* Pula linha */
             lerExpressoes(reader);
 
+            reader.close();
+
         } catch (FileNotFoundException ex) {
-
-        } catch (NumberFormatException | IOException e) {
-
-        } finally {
-            try {
-                reader.close();
-            } catch (IOException e) {
-            	throw e;
-            }
+            throw ex;
+        } catch (NumberFormatException ex) {
+            throw new InvalidSyntaxException();
         }
     }
 
@@ -45,20 +42,22 @@ public class ExpressaoFileReader {
 
     private void lerVariaveis(BufferedReader reader) throws NumberFormatException, IOException {
         variaveis = new ArrayList<>();
-        int nVariaveis = Integer.parseInt(reader.readLine());
+        String nextLine = reader.readLine().trim();
 
+        int nVariaveis = Integer.parseInt(nextLine);
         for (int i = 0; i < nVariaveis; i++) {
-            String nextLine = reader.readLine();
+            nextLine = reader.readLine().trim();
             variaveis.add(nextLine);
         }
     }
 
     private void lerExpressoes(BufferedReader reader) throws NumberFormatException, IOException {
         expressoes = new ArrayList<>();
-        int nExpressoes = Integer.parseInt(reader.readLine());
+        String nextLine = reader.readLine().trim();
 
+        int nExpressoes = Integer.parseInt(nextLine);
         for (int i = 0; i < nExpressoes; i++) {
-            String nextLine = reader.readLine();
+            nextLine = reader.readLine().trim();
             expressoes.add(nextLine);
         }
     }
