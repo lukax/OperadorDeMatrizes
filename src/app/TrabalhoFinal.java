@@ -16,12 +16,23 @@ import app.io.ExpressionParser;
 import app.io.VariableParser;
 import app.mat.base.Expressao;
 
+/**
+ *
+ * @author Lucas Dias de Espindola - 113031089
+ */
+
 @SuppressWarnings({"rawtypes"})
 public class TrabalhoFinal {
 
     public static void main(String[] args) throws IOException {
-        String arquivoDeEntrada = "asdf";
-        String arquivoDeSaida = "asdff";
+    	System.out.println("Operador de Matrizes v1.0 - Lucas Espindola");
+        if(args.length != 2){
+        	System.err.println("Erro! Execução incorreta.");
+        	System.err.println("Ex: OperadorDeMatrizes.jar \"arquivodeentrada.txt\" \"arquivodesaida.txt\" ");
+        	return;
+        }
+    	String arquivoDeEntrada = args[0];
+        String arquivoDeSaida = args[1];
 
         ExpressaoFileReader reader = null;
         try {
@@ -74,6 +85,8 @@ public class TrabalhoFinal {
             System.err.println(e.getMessage());
             throw e;
         }
+        
+        System.out.println("Operação concluída com sucesso");
     }
 
     static void processInvalidLine(OperadorDeMatrizesException e, String invalidLine) {

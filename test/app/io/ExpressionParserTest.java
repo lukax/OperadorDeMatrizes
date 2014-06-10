@@ -1,23 +1,24 @@
 package app.io;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-
-import org.junit.Test;
-
 import app.mat.AdicaoEscalar;
 import app.mat.AdicaoMatricial;
 import app.mat.Determinante;
 import app.mat.Escalar;
 import app.mat.Matriz;
 import app.mat.MultiplicacaoEscalar;
+import app.mat.MultiplicacaoMatricial;
 import app.mat.MultiplicacaoMista;
 import app.mat.SolucaoDeSistema;
 import app.mat.base.Expressao;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 @SuppressWarnings("rawtypes")
 public class ExpressionParserTest {
@@ -125,13 +126,15 @@ public class ExpressionParserTest {
         vars.put("A", varA);
         vars.put("B", varB);
 
-        ExpressaoTokenizer tokenizer = new ExpressaoTokenizer("2*(A+B)");
+        ExpressaoTokenizer tokenizer = new ExpressaoTokenizer("2*(A*B)");
         ExpressionParser parser = new ExpressionParser(tokenizer, vars);
 
         Expressao exp = parser.parse();
 
         assertTrue(exp instanceof MultiplicacaoMista);
-        assertEquals(2 * (varA.getValor(1, 0) + varB.getValor(1, 0)), ((MultiplicacaoMista) exp).calcular().getValor(1, 0), 0);
+        double mulResult = 2 * ((varA.getValor(0, 0) * varB.getValor(0, 0)) + (varA.getValor(0,1) * varB.getValor(1, 0)) + (varA.getValor(0, 2) * varB.getValor(2, 0)));
+        
+        assertEquals(mulResult, ((MultiplicacaoMista) exp).calcular().getValor(0, 0), 0);
     }
 
     @Test
