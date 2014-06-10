@@ -1,10 +1,11 @@
 package app.io;
 
-import app.domain.Token;
-import app.domain.TokenType;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import app.domain.Token;
+import app.domain.TokenType;
+import app.exception.InvalidSyntaxException;
 
 public class ExpressaoTokenizer {
 
@@ -95,7 +96,8 @@ public class ExpressaoTokenizer {
                         token.setType(TokenType.VAR);
                     } 
                     else {
-                        //TODO: exception, not a valid token
+                        //Not a valid token
+                    	throw new InvalidSyntaxException();
                     }
 
                     token.setValue(parsed);

@@ -7,14 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.domain.Messages;
-
 public class ExpressaoFileReader {
 
     private ArrayList<String> variaveis;
     private ArrayList<String> expressoes;
 
-    public ExpressaoFileReader(String arquivo) {
+    public ExpressaoFileReader(String arquivo) throws IOException {
         BufferedReader reader = null;
 
         try {
@@ -32,16 +30,16 @@ public class ExpressaoFileReader {
             try {
                 reader.close();
             } catch (IOException e) {
-                System.err.println(Messages.ERROR_CLOSE_FILE);
+            	throw e;
             }
         }
     }
 
-    public List<String> getVariaveis() {
+    public List<String> getVariables() {
         return variaveis;
     }
 
-    public List<String> getExpressoes() {
+    public List<String> getExpressions() {
         return expressoes;
     }
 

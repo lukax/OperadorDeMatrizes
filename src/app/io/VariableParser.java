@@ -3,6 +3,7 @@ package app.io;
 import app.domain.Token;
 import app.domain.TokenType;
 import app.domain.Variable;
+import app.exception.InvalidSyntaxException;
 import app.mat.Escalar;
 import app.mat.Matriz;
 
@@ -43,9 +44,12 @@ public class VariableParser {
 				var.setName(varName);
 				var.setExpressao(expressao);
 			}
+			
+			if(tokenizer.nextToken().getType() == TokenType.END)
+				return var;				
 		}
 		
-		return var;
+		throw new InvalidSyntaxException();
 	}
 	
 }

@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import app.domain.Messages;
 import app.mat.base.Expressao;
 
 public class ExpressaoFileWriter {
@@ -16,7 +15,7 @@ public class ExpressaoFileWriter {
 		this.arquivo = arquivo;
     }
     
-    public void write(List<Expressao<?>> expressoes){
+    public void write(List<Expressao<?>> expressoes) throws IOException{
     	BufferedWriter writer = null;
     	try {
     		writer = new BufferedWriter(new FileWriter(arquivo));
@@ -27,12 +26,12 @@ public class ExpressaoFileWriter {
             }
 
         } catch (IOException e) {
-            //TODO: exception
+        	throw e; 
         } finally {
             try {
                 writer.close();
             } catch (IOException e) {
-                System.err.println(Messages.ERROR_CLOSE_FILE);
+            	throw e;
             }
         }
 

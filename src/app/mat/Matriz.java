@@ -1,6 +1,7 @@
 package app.mat;
 
 import app.domain.ExpressaoMatricial;
+import app.domain.Messages;
 import app.mat.base.Expressao;
 
 public class Matriz extends Expressao<Matriz> implements ExpressaoMatricial{
@@ -8,6 +9,8 @@ public class Matriz extends Expressao<Matriz> implements ExpressaoMatricial{
 	private double[][] valores;
 	
 	public Matriz(int linhas, int colunas){
+		if(linhas < 0 || colunas < 0)
+			throw new IllegalArgumentException(Messages.ERROR_INVALID_MATRIX_SIZE);
 		valores = new double[linhas][colunas];
 	}
 	
@@ -20,10 +23,14 @@ public class Matriz extends Expressao<Matriz> implements ExpressaoMatricial{
 	}
 	
 	public double getValor(int lin, int col){
+		if((lin < 0 || col < 0) || (lin > linhas() -1 || col > colunas() -1))
+			throw new IllegalArgumentException(Messages.ERROR_INVALID_MATRIX_SIZE);
 		return valores[lin][col];
 	}
 	
 	public void setValor(int lin, int col, double valor){
+		if((lin < 0 || col < 0) || (lin > linhas() -1 || col > colunas() -1))
+			throw new IllegalArgumentException(Messages.ERROR_INVALID_MATRIX_SIZE);
 		valores[lin][col] = valor;
 	}
 	

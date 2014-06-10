@@ -7,6 +7,9 @@ import app.domain.ExpressaoEscalar;
 import app.domain.ExpressaoMatricial;
 import app.domain.Token;
 import app.domain.TokenType;
+import app.exception.InvalidOperationException;
+import app.exception.InvalidSyntaxException;
+import app.exception.MissingVariableException;
 import app.mat.AdicaoEscalar;
 import app.mat.AdicaoMatricial;
 import app.mat.AdicaoMista;
@@ -37,15 +40,14 @@ public class ExpressionParser {
 		Token token = tokenizer.nextToken();
 		if (token.getType() == TokenType.END) {
 			return result;
-		} 
-		else {
-			// TODO: end expected
-			return null;
 		}
+		
+		//fim esperado
+		throw new InvalidSyntaxException();
 	}
 
 	private Expressao variable() {
-		Expressao var = null; // Pode ser tipo Matriz ou Escalar
+		Expressao var = null; // Matriz ou Escalar
 
 		Token token = tokenizer.nextToken();
 		if (token.getType() == TokenType.LPAREN) {
@@ -54,7 +56,8 @@ public class ExpressionParser {
 
 			Token nextToken = tokenizer.nextToken();
 			if (nextToken.getType() != TokenType.RPAREN) {
-				// TODO: Se não terminar com parenteses lançar excessao
+				//Se não terminar com parenteses
+				throw new InvalidSyntaxException();
 			}
 		} 
 		else if (token.getType() == TokenType.NUM) {
@@ -66,12 +69,12 @@ public class ExpressionParser {
 			
 			var = variables.get(varName);
 			if(var == null){
-				//TODO: variavel nao existe na lista
+				//variavel não declarada
+				throw new MissingVariableException();
 			}
 		} 
 		else {
-			// TODO: nao é um numero
-			
+			throw new InvalidSyntaxException();
 		}
 
 		return var;
@@ -130,13 +133,13 @@ public class ExpressionParser {
 					factor1 = new MultiplicacaoEscalar(factor1, new InversaoEscalar(factor2));
 				else if(factor1 instanceof ExpressaoMatricial && factor2 instanceof ExpressaoMatricial)
 					//matriz / matriz
-					throw new RuntimeException();
+					throw new InvalidOperationException();
 				else if(factor1 instanceof ExpressaoEscalar && factor2 instanceof ExpressaoMatricial)
 					//escalar / matriz
-					throw new RuntimeException(); 
+					throw new InvalidOperationException();
 				else if(factor1 instanceof ExpressaoMatricial && factor2 instanceof ExpressaoEscalar)
 					//matriz / escalar
-					throw new RuntimeException();
+					throw new InvalidOperationException();
 			}
 
 			token = tokenizer.nextToken();
