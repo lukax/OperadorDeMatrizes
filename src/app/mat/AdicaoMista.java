@@ -1,13 +1,13 @@
 package app.mat;
 
-import app.domain.ExpressaoMatricial;
+import app.domain.ExpressionType;
 import app.mat.base.Expressao;
 import app.mat.base.OperacaoBinaria;
 
-public class AdicaoMista extends OperacaoBinaria<Expressao<Escalar>, Expressao<Matriz>, Matriz> implements ExpressaoMatricial{
+public class AdicaoMista extends OperacaoBinaria<Expressao<Escalar>, Expressao<Matriz>, Matriz> {
 
     public AdicaoMista(Expressao<Escalar> arg1, Expressao<Matriz> arg2) {
-        super(arg1, arg2);
+        super(ExpressionType.MATRIX, arg1, arg2);
     }
 
     @Override

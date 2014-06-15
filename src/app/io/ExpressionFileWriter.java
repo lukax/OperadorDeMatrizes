@@ -7,11 +7,11 @@ import java.util.List;
 
 import app.mat.base.Expressao;
 
-public class ExpressaoFileWriter {
+public class ExpressionFileWriter {
 
     private final String arquivo;
 
-    public ExpressaoFileWriter(String arquivo) {
+    public ExpressionFileWriter(String arquivo) {
         this.arquivo = arquivo;
     }
 

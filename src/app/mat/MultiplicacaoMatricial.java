@@ -1,14 +1,14 @@
 package app.mat;
 
-import app.domain.ExpressaoMatricial;
+import app.domain.ExpressionType;
 import app.domain.Messages;
 import app.mat.base.Expressao;
 import app.mat.base.OperacaoBinaria;
 
-public class MultiplicacaoMatricial extends OperacaoBinaria<Expressao<Matriz>, Expressao<Matriz>, Matriz> implements ExpressaoMatricial {
+public class MultiplicacaoMatricial extends OperacaoBinaria<Expressao<Matriz>, Expressao<Matriz>, Matriz> {
 
     public MultiplicacaoMatricial(Expressao<Matriz> arg1, Expressao<Matriz> arg2) {
-        super(arg1, arg2);
+        super(ExpressionType.MATRIX, arg1, arg2);
     }
 
     @Override

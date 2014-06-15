@@ -1,15 +1,15 @@
 package app.mat;
 
-import app.domain.ExpressaoEscalar;
+import app.domain.ExpressionType;
 import app.domain.Messages;
 import app.exception.InvalidOperationException;
 import app.mat.base.Expressao;
 import app.mat.base.OperacaoUnaria;
 
-public class InversaoEscalar extends OperacaoUnaria<Expressao<Escalar>, Escalar> implements ExpressaoEscalar {
+public class InversaoEscalar extends OperacaoUnaria<Expressao<Escalar>, Escalar> {
 
     public InversaoEscalar(Expressao<Escalar> arg) {
-        super(arg);
+        super(ExpressionType.ESCALAR, arg);
     }
 
     @Override

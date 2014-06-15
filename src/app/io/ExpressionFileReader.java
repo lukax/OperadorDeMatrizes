@@ -9,12 +9,12 @@ import java.util.List;
 
 import app.exception.InvalidSyntaxException;
 
-public class ExpressaoFileReader {
+public class ExpressionFileReader {
 
     private ArrayList<String> variaveis;
     private ArrayList<String> expressoes;
 
-    public ExpressaoFileReader(String arquivo) throws IOException {
+    public ExpressionFileReader(String arquivo) throws IOException {
         BufferedReader reader;
 
         try {

@@ -1,14 +1,16 @@
 package app.mat;
 
-import app.domain.ExpressaoEscalar;
-import app.mat.base.Expressao;
 import java.text.DecimalFormat;
 
-public class Escalar extends Expressao<Escalar> implements ExpressaoEscalar {
+import app.domain.ExpressionType;
+import app.mat.base.Expressao;
+
+public class Escalar extends Expressao<Escalar> {
 
     private double valor;
 
     public Escalar(double valor) {
+    	super(ExpressionType.ESCALAR);
         this.valor = valor;
     }
 

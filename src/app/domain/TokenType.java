@@ -1,6 +1,7 @@
 package app.domain;
 
 public enum TokenType {
+	LET,
     VAR,
     NUM,
     

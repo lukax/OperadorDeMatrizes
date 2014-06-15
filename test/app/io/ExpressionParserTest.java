@@ -1,24 +1,24 @@
 package app.io;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import org.junit.Test;
+
+import app.domain.Variable;
 import app.mat.AdicaoEscalar;
 import app.mat.AdicaoMatricial;
 import app.mat.Determinante;
 import app.mat.Escalar;
 import app.mat.Matriz;
 import app.mat.MultiplicacaoEscalar;
-import app.mat.MultiplicacaoMatricial;
 import app.mat.MultiplicacaoMista;
 import app.mat.SolucaoDeSistema;
 import app.mat.base.Expressao;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
 
 @SuppressWarnings("rawtypes")
 public class ExpressionParserTest {
@@ -88,11 +88,11 @@ public class ExpressionParserTest {
 
     @Test
     public void parseExpressionWithVariable() {
-        Map<String, Expressao> vars = new HashMap<>();
+        List<Variable> vars = new ArrayList<>();
         Escalar varA = new Escalar(5);
         Escalar varB = new Escalar(10);
-        vars.put("A", varA);
-        vars.put("B", varB);
+        vars.add(new Variable("A", varA));
+        vars.add(new Variable("B", varB));
 
         Expressao<?> expressao = buildExpressao("A+B", vars);
         assertTrue(expressao instanceof AdicaoEscalar);
@@ -103,13 +103,13 @@ public class ExpressionParserTest {
 
     @Test
     public void parseMatrixExpression() {
-        Map<String, Expressao> vars = new HashMap<>();
+        List<Variable> vars = new ArrayList<>();
         Matriz varA = buildMatrix(2, 2);
         Matriz varB = buildMatrix(2, 2);
-        vars.put("A", varA);
-        vars.put("B", varB);
+        vars.add(new Variable("A", varA));
+        vars.add(new Variable("B", varB));
 
-        ExpressaoTokenizer tokenizer = new ExpressaoTokenizer("A-B");
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer("A-B");
         ExpressionParser parser = new ExpressionParser(tokenizer, vars);
 
         Expressao exp = parser.parse();
@@ -120,13 +120,13 @@ public class ExpressionParserTest {
 
     @Test
     public void parseLongMatrixExpression() {
-        Map<String, Expressao> vars = new HashMap<>();
+        List<Variable> vars = new ArrayList<>();
         Matriz varA = buildMatrix(2, 3);
         Matriz varB = buildMatrix(3, 2);
-        vars.put("A", varA);
-        vars.put("B", varB);
+        vars.add(new Variable("A", varA));
+        vars.add(new Variable("B", varB));
 
-        ExpressaoTokenizer tokenizer = new ExpressaoTokenizer("2*(A*B)");
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer("2*(A*B)");
         ExpressionParser parser = new ExpressionParser(tokenizer, vars);
 
         Expressao exp = parser.parse();
@@ -139,15 +139,15 @@ public class ExpressionParserTest {
 
     @Test
     public void parseDetFunction() {
-        Map<String, Expressao> vars = new HashMap<>();
+        List<Variable> vars = new ArrayList<>();
         Matriz varA = new Matriz(2, 2);
         varA.setValor(0, 0, 42);
         varA.setValor(0, 1, 1.618);
         varA.setValor(1, 1, 2.71);
         varA.setValor(1, 0, 3.14);
-        vars.put("A", varA);
+        vars.add(new Variable("A", varA));
 
-        ExpressaoTokenizer tokenizer = new ExpressaoTokenizer("det(A*1)");
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer("det(A*1)");
         ExpressionParser parser = new ExpressionParser(tokenizer, vars);
 
         Expressao exp = parser.parse();
@@ -158,7 +158,7 @@ public class ExpressionParserTest {
     
     @Test
     public void parseSolFunction() {
-        Map<String, Expressao> vars = new HashMap<>();
+        List<Variable> vars = new ArrayList<>();
         Matriz var = new Matriz(3, 4);
         var.setValor(0, 0, 1);
         var.setValor(0, 1, 0);
@@ -172,9 +172,9 @@ public class ExpressionParserTest {
         var.setValor(2, 1, -3);
         var.setValor(2, 2, 0);
         var.setValor(2, 3, -2);
-        vars.put("A", var);
+        vars.add(new Variable("A", var));
 
-        ExpressaoTokenizer tokenizer = new ExpressaoTokenizer("sol(A)");
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer("sol(A)");
         ExpressionParser parser = new ExpressionParser(tokenizer, vars);
 
         Expressao exp = parser.parse();
@@ -193,9 +193,9 @@ public class ExpressionParserTest {
         }
     }
 
-    Expressao<?> buildExpressao(String expressao, Map<String, Expressao> vars) {
-        ExpressaoTokenizer tokenizer = new ExpressaoTokenizer(expressao);
-        ExpressionParser parser = new ExpressionParser(tokenizer, ((vars != null) ? vars : new HashMap<String, Expressao>()));
+    Expressao<?> buildExpressao(String expressao, List<Variable> vars) {
+    	ExpressionTokenizer tokenizer = new ExpressionTokenizer(expressao);
+        ExpressionParser parser = new ExpressionParser(tokenizer, ((vars != null) ? vars : new ArrayList<Variable>()));
         return parser.parse();
     }
 

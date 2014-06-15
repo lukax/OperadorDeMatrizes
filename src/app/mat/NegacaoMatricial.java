@@ -1,13 +1,13 @@
 package app.mat;
 
-import app.domain.ExpressaoMatricial;
+import app.domain.ExpressionType;
 import app.mat.base.Expressao;
 import app.mat.base.OperacaoUnaria;
 
-public class NegacaoMatricial extends OperacaoUnaria<Expressao<Matriz>, Matriz> implements ExpressaoMatricial {
+public class NegacaoMatricial extends OperacaoUnaria<Expressao<Matriz>, Matriz> {
 
     public NegacaoMatricial(Expressao<Matriz> arg) {
-        super(arg);
+        super(ExpressionType.MATRIX, arg);
     }
 
     @Override

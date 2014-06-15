@@ -1,12 +1,14 @@
 package app.io;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import app.domain.ExpressaoEscalar;
-import app.domain.ExpressaoMatricial;
+import app.domain.ExpressionType;
 import app.domain.Token;
 import app.domain.TokenType;
+import app.domain.Variable;
 import app.exception.InvalidOperationException;
 import app.exception.InvalidSyntaxException;
 import app.exception.MissingVariableException;
@@ -27,12 +29,15 @@ import app.mat.base.Expressao;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class ExpressionParser {
 
-    private final ExpressaoTokenizer tokenizer;
-    private final Map<String, Expressao> variables;
-
-    public ExpressionParser(ExpressaoTokenizer tokenizer, Map<String, Expressao> variables) {
-        this.tokenizer = tokenizer;
-        this.variables = variables;
+    private final ExpressionTokenizer tokenizer;
+    private final Map<String, Expressao<?>> variables;
+   
+    public ExpressionParser(ExpressionTokenizer tokenizer, List<Variable> vars) {
+    	this.tokenizer = tokenizer;
+    	this.variables = new HashMap<String, Expressao<?>>();
+    	for(Variable var : vars) {
+    		this.variables.put(var.getName(), var.getExpressao());
+    	}
     }
 
     public Expressao parse() {
@@ -112,30 +117,30 @@ public class ExpressionParser {
             Expressao factor2 = variable();
 
             if (token.getType() == TokenType.MUL) {
-                if (factor1 instanceof ExpressaoEscalar && factor2 instanceof ExpressaoEscalar) //escalar * escalar
+                if (factor1.getType().equals(ExpressionType.ESCALAR) && factor2.getType().equals(ExpressionType.ESCALAR)) //escalar * escalar
                 {
                     factor1 = new MultiplicacaoEscalar(factor1, factor2);
-                } else if (factor1 instanceof ExpressaoMatricial && factor2 instanceof ExpressaoMatricial) //matriz * matriz
+                } else if (factor1.getType().equals(ExpressionType.MATRIX) && factor2.getType().equals(ExpressionType.MATRIX)) //matriz * matriz
                 {
                     factor1 = new MultiplicacaoMatricial(factor1, factor2);
-                } else if (factor1 instanceof ExpressaoEscalar && factor2 instanceof ExpressaoMatricial) //escalar * matriz
+                } else if (factor1.getType().equals(ExpressionType.ESCALAR) && factor2.getType().equals(ExpressionType.MATRIX)) //escalar * matriz
                 {
                     factor1 = new MultiplicacaoMista(factor1, factor2);
-                } else if (factor1 instanceof ExpressaoMatricial && factor2 instanceof ExpressaoEscalar) //matriz * escalar
+                } else if (factor1.getType().equals(ExpressionType.MATRIX) && factor2.getType().equals(ExpressionType.ESCALAR)) //matriz * escalar
                 {
                     factor1 = new MultiplicacaoMista(factor2, factor1);
                 }
             } else if (token.getType() == TokenType.DIV) {
-                if (factor1 instanceof ExpressaoEscalar && factor2 instanceof ExpressaoEscalar) //escalar / escalar
+                if (factor1.getType().equals(ExpressionType.ESCALAR) && factor2.getType().equals(ExpressionType.ESCALAR)) //escalar / escalar
                 {
                     factor1 = new MultiplicacaoEscalar(factor1, new InversaoEscalar(factor2));
-                } else if (factor1 instanceof ExpressaoMatricial && factor2 instanceof ExpressaoMatricial) //matriz / matriz
+                } else if (factor1.getType().equals(ExpressionType.MATRIX) && factor2.getType().equals(ExpressionType.MATRIX)) //matriz / matriz
                 {
                     throw new InvalidOperationException();
-                } else if (factor1 instanceof ExpressaoEscalar && factor2 instanceof ExpressaoMatricial) //escalar / matriz
+                } else if (factor1.getType().equals(ExpressionType.ESCALAR) && factor2.getType().equals(ExpressionType.MATRIX)) //escalar / matriz
                 {
                     throw new InvalidOperationException();
-                } else if (factor1 instanceof ExpressaoMatricial && factor2 instanceof ExpressaoEscalar) //matriz / escalar
+                } else if (factor1.getType().equals(ExpressionType.MATRIX) && factor2.getType().equals(ExpressionType.ESCALAR)) //matriz / escalar
                 {
                     throw new InvalidOperationException();
                 }
@@ -159,30 +164,30 @@ public class ExpressionParser {
             Expressao expression2 = factor();
 
             if (token.getType() == TokenType.ADD) {
-                if (expression1 instanceof ExpressaoEscalar && expression2 instanceof ExpressaoEscalar) //escalar + escalar
+                if (expression1.getType().equals(ExpressionType.ESCALAR) && expression2.getType().equals(ExpressionType.ESCALAR)) //escalar + escalar
                 {
                     expression1 = new AdicaoEscalar(expression1, expression2);
-                } else if (expression1 instanceof ExpressaoMatricial && expression2 instanceof ExpressaoMatricial) //matriz + matriz
+                } else if (expression1.getType().equals(ExpressionType.MATRIX) && expression2.getType().equals(ExpressionType.MATRIX)) //matriz + matriz
                 {
                     expression1 = new AdicaoMatricial(expression1, expression2);
-                } else if (expression1 instanceof ExpressaoEscalar && expression2 instanceof ExpressaoMatricial) //escalar + matriz
+                } else if (expression1.getType().equals(ExpressionType.ESCALAR) && expression2.getType().equals(ExpressionType.MATRIX)) //escalar + matriz
                 {
                     expression1 = new AdicaoMista(expression1, expression2);
-                } else if (expression1 instanceof ExpressaoMatricial && expression2 instanceof ExpressaoEscalar) //matriz + escalar
+                } else if (expression1.getType().equals(ExpressionType.MATRIX) && expression2.getType().equals(ExpressionType.ESCALAR)) //matriz + escalar
                 {
                     expression1 = new AdicaoMista(expression2, expression1);
                 }
             } else if (token.getType() == TokenType.SUB) {
-                if (expression1 instanceof ExpressaoEscalar && expression2 instanceof ExpressaoEscalar) //escalar - escalar
+                if (expression1.getType().equals(ExpressionType.ESCALAR) && expression2.getType().equals(ExpressionType.ESCALAR)) //escalar - escalar
                 {
                     expression1 = new AdicaoEscalar(expression1, new NegacaoEscalar(expression2));
-                } else if (expression1 instanceof ExpressaoMatricial && expression2 instanceof ExpressaoMatricial) //matriz - matriz
+                } else if (expression1.getType().equals(ExpressionType.MATRIX) && expression2.getType().equals(ExpressionType.MATRIX)) //matriz - matriz
                 {
                     expression1 = new AdicaoMatricial(expression1, new NegacaoMatricial(expression2));
-                } else if (expression1 instanceof ExpressaoEscalar && expression2 instanceof ExpressaoMatricial) //escalar - matriz
+                } else if (expression1.getType().equals(ExpressionType.ESCALAR) && expression2.getType().equals(ExpressionType.MATRIX)) //escalar - matriz
                 {
                     expression1 = new AdicaoMista(expression1, new NegacaoMatricial(expression2));
-                } else if (expression1 instanceof ExpressaoMatricial && expression2 instanceof ExpressaoEscalar) //matriz - escalar
+                } else if (expression1.getType().equals(ExpressionType.MATRIX) && expression2.getType().equals(ExpressionType.ESCALAR)) //matriz - escalar
                 {
                     expression1 = new AdicaoMista(new NegacaoEscalar(expression2), expression1);
                 }

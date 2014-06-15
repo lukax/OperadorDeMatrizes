@@ -11,7 +11,7 @@ public class ExpressaoTokenizerTest {
 
     @Test
     public void identifyNumbers() {
-        ExpressaoTokenizer tokenizer = new ExpressaoTokenizer("1.878");
+        ExpressionTokenizer tokenizer = new ExpressionTokenizer("1.878");
         Token token = tokenizer.nextToken();
 
         assertEquals(token.getType(), TokenType.NUM);
@@ -20,7 +20,7 @@ public class ExpressaoTokenizerTest {
 
     @Test
     public void identifyFuncs() {
-        ExpressaoTokenizer tokenizer = new ExpressaoTokenizer("det");
+    	ExpressionTokenizer tokenizer = new ExpressionTokenizer("det");
         Token token = tokenizer.nextToken();
 
         assertEquals(token.getType(), TokenType.DET);
@@ -29,7 +29,7 @@ public class ExpressaoTokenizerTest {
 
     @Test
     public void identifyVariables() {
-        ExpressaoTokenizer tokenizer = new ExpressaoTokenizer("a");
+    	ExpressionTokenizer tokenizer = new ExpressionTokenizer("a");
         Token token = tokenizer.nextToken();
 
         assertEquals(token.getType(), TokenType.VAR);
@@ -38,7 +38,7 @@ public class ExpressaoTokenizerTest {
 
     @Test
     public void identifyExpressions() {
-        ExpressaoTokenizer t = new ExpressaoTokenizer("35.1+sol(A)*(1+2)");
+    	ExpressionTokenizer t = new ExpressionTokenizer("35.1+sol(A)*(1+2)");
         Token token;
 
         token = t.nextToken();

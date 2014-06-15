@@ -13,7 +13,7 @@ public class VariableParserTest {
 
 	@Test
 	public void parseEscalar() {
-		ExpressaoTokenizer tokenizer = new ExpressaoTokenizer("E A 13.1");
+		ExpressionTokenizer tokenizer = new ExpressionTokenizer("LET E A 13.1");
 		VariableParser parser = new VariableParser(tokenizer);
 		
 		Variable var = parser.parse();
@@ -26,7 +26,7 @@ public class VariableParserTest {
 
 	@Test
 	public void parseMatriz(){
-		ExpressaoTokenizer tokenizer = new ExpressaoTokenizer("M B 3 2 1.3 53 1 3 7.6 9");
+		ExpressionTokenizer tokenizer = new ExpressionTokenizer("LET M B 3 2 1.3 53 1 3 7.6 9");
 		VariableParser parser = new VariableParser(tokenizer);
 		
 		Variable var = parser.parse();

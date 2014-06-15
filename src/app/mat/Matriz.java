@@ -1,15 +1,17 @@
 package app.mat;
 
-import app.domain.ExpressaoMatricial;
-import app.domain.Messages;
-import app.mat.base.Expressao;
 import java.text.DecimalFormat;
 
-public class Matriz extends Expressao<Matriz> implements ExpressaoMatricial {
+import app.domain.ExpressionType;
+import app.domain.Messages;
+import app.mat.base.Expressao;
+
+public class Matriz extends Expressao<Matriz> {
 
     private double[][] valores;
 
     public Matriz(int linhas, int colunas) {
+    	super(ExpressionType.MATRIX);
         if (linhas < 0 || colunas < 0) {
             throw new IllegalArgumentException(Messages.ERROR_INVALID_MATRIX_SIZE);
         }

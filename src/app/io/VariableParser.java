@@ -9,9 +9,9 @@ import app.mat.Matriz;
 
 public class VariableParser {
 
-    private final ExpressaoTokenizer tokenizer;
+    private final ExpressionTokenizer tokenizer;
 
-    public VariableParser(ExpressaoTokenizer tokenizer) {
+    public VariableParser(ExpressionTokenizer tokenizer) {
         this.tokenizer = tokenizer;
     }
 
@@ -19,7 +19,8 @@ public class VariableParser {
         Variable var = new Variable();
         Token token = tokenizer.nextToken();
 
-        if (token.getType() == TokenType.VAR) {
+        if (token.getType() == TokenType.LET) {
+        	token = tokenizer.nextToken();
             switch (token.getValue()) {
                 case "E": {
                     String varName = tokenizer.nextToken().getValue();

@@ -1,15 +1,15 @@
 package app.mat;
 
-import app.domain.ExpressaoMatricial;
+import app.domain.ExpressionType;
 import app.domain.Messages;
 import app.exception.InvalidOperationException;
 import app.mat.base.Expressao;
 import app.mat.base.OperacaoUnaria;
 
-public class SolucaoDeSistema extends OperacaoUnaria<Expressao<Matriz>, Matriz> implements ExpressaoMatricial {
+public class SolucaoDeSistema extends OperacaoUnaria<Expressao<Matriz>, Matriz> {
 
     public SolucaoDeSistema(Expressao<Matriz> arg) {
-        super(arg);
+        super(ExpressionType.MATRIX, arg);
     }
 
     @Override
